@@ -17,3 +17,6 @@ list-tables:
 
 list-table-items:
 	docker compose exec awscli bash -c "aws dynamodb scan --table-name $(name) --endpoint-url http://dynamodb:8000"
+
+delete-local-data:
+	rm -r ./docker

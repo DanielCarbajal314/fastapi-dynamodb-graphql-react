@@ -5,7 +5,7 @@ from mypy_boto3_dynamodb.type_defs import (
     AttributeDefinitionTypeDef,
     ProvisionedThroughputTypeDef,
     KeySchemaElementTypeDef,
-    GlobalSecondaryIndexTypeDef
+    GlobalSecondaryIndexTypeDef,
 )
 from mypy_boto3_dynamodb.service_resource import Table
 from typing import Sequence
@@ -32,7 +32,7 @@ class DynamoDbTableFactory:
         key_scheme: Sequence[KeySchemaElementTypeDef],
         attribute_definitions: Sequence[AttributeDefinitionTypeDef],
         provisioned_throughput: ProvisionedThroughputTypeDef,
-        global_secondary_index: Sequence[GlobalSecondaryIndexTypeDef]
+        global_secondary_index: Sequence[GlobalSecondaryIndexTypeDef],
     ):
         try:
             table = self.resource.create_table(
@@ -40,7 +40,7 @@ class DynamoDbTableFactory:
                 KeySchema=key_scheme,
                 AttributeDefinitions=attribute_definitions,
                 ProvisionedThroughput=provisioned_throughput,
-                GlobalSecondaryIndexes=global_secondary_index
+                GlobalSecondaryIndexes=global_secondary_index,
             )
             table.wait_until_exists()
             return table
@@ -73,5 +73,5 @@ class DynamoDbTableFactory:
                 key_scheme=key_scheme,
                 attribute_definitions=attribute_definitions,
                 provisioned_throughput=provisioned_throughput,
-                global_secondary_index=global_secondary_index
+                global_secondary_index=global_secondary_index,
             )

@@ -1,6 +1,7 @@
 from enum import Enum
 from pydantic import BaseModel
 
+
 class TaskState(str, Enum):
     Backlog = "BACKLOG"
     Doing = "DOING"
@@ -15,7 +16,20 @@ class Task(BaseModel):
     project_id: str
     title: str
 
+
 class CreateTask(BaseModel):
     description: str
     project_id: str
     title: str
+
+
+class UpdateTask(BaseModel):
+    id: str
+    description: str
+    title: str
+    state: TaskState = TaskState.Backlog
+
+
+class UpdateTaskState(BaseModel):
+    id: str
+    state: TaskState = TaskState.Backlog
