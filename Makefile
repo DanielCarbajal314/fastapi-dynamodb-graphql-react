@@ -20,3 +20,6 @@ list-table-items:
 
 delete-local-data:
 	rm -r ./docker
+
+format:
+	docker compose exec server bash -c "black ./src"

@@ -19,3 +19,13 @@ services:
     entrypoint: tail -f /dev/null
     env_file:
       - .env
+  server:
+    build: 
+      context: backend
+      dockerfile: ./Dockerfile.dev
+    env_file:
+      - .env
+    volumes:
+      - ./backend/src:/code/src
+    ports:
+      - ${API_SERVER_PORT}:8000
