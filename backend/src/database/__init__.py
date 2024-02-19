@@ -1,3 +1,3 @@
 from .Database import Database
-from .get_dynamodb_resource import get_dynamodb_resource
-from .models import Project
+from .get_database import get_database
+from .models import Project, Task, UpdateTask, UpdateTaskState, TaskState, CreateTask

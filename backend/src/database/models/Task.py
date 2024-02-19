@@ -3,10 +3,10 @@ from pydantic import BaseModel
 
 
 class TaskState(str, Enum):
-    Backlog = "BACKLOG"
-    Doing = "DOING"
-    Review = "REVIEW"
-    Done = "DONE"
+    Backlog = "Backlog"
+    Doing = "Doing"
+    Review = "Review"
+    Done = "Done"
 
 
 class Task(BaseModel):

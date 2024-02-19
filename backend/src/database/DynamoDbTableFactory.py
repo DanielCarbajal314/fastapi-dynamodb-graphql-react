@@ -35,12 +35,21 @@ class DynamoDbTableFactory:
         global_secondary_index: Sequence[GlobalSecondaryIndexTypeDef],
     ):
         try:
-            table = self.resource.create_table(
-                TableName=table_name,
-                KeySchema=key_scheme,
-                AttributeDefinitions=attribute_definitions,
-                ProvisionedThroughput=provisioned_throughput,
-                GlobalSecondaryIndexes=global_secondary_index,
+            table = (
+                self.resource.create_table(
+                    TableName=table_name,
+                    KeySchema=key_scheme,
+                    AttributeDefinitions=attribute_definitions,
+                    ProvisionedThroughput=provisioned_throughput,
+                    GlobalSecondaryIndexes=global_secondary_index,
+                )
+                if global_secondary_index
+                else self.resource.create_table(
+                    TableName=table_name,
+                    KeySchema=key_scheme,
+                    AttributeDefinitions=attribute_definitions,
+                    ProvisionedThroughput=provisioned_throughput,
+                )
             )
             table.wait_until_exists()
             return table
@@ -59,7 +68,7 @@ class DynamoDbTableFactory:
         key_scheme: Sequence[KeySchemaElementTypeDef],
         attribute_definitions: Sequence[AttributeDefinitionTypeDef],
         provisioned_throughput: ProvisionedThroughputTypeDef = defaultProvisionedThroughputTypeDef,
-        global_secondary_index: Sequence[GlobalSecondaryIndexTypeDef] = [],
+        global_secondary_index: Sequence[GlobalSecondaryIndexTypeDef] = None,
     ) -> Table:
         try:
             table = self.resource.Table(table_name)

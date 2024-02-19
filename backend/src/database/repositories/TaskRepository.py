@@ -49,7 +49,7 @@ class TaskRepository:
         )
         return [Task.model_validate(item) for item in page["Items"]]
 
-    def update_task_state(self, updateTaskState: UpdateTaskState) -> List[Task]:
+    def update_task_state(self, updateTaskState: UpdateTaskState) -> Task:
         page = self.__table.update_item(
             Key={"id": updateTaskState.id},
             UpdateExpression="SET #st = :state_value",
