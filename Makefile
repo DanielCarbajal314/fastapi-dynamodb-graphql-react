@@ -23,3 +23,6 @@ delete-local-data:
 
 format:
 	docker compose exec server bash -c "black ./src"
+
+open-grapiql:
+	open http://localhost:8500/graphql

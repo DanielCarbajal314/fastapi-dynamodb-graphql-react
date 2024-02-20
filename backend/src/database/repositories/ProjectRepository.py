@@ -30,3 +30,7 @@ class ProjectRepository:
             )
         )
         return [Project.model_validate(item) for item in page["Items"]]
+
+    def get_by_id(self, project_id: str) -> Project:
+        response = self.__table.get_item(Key={"id": project_id})
+        return Project.model_validate(response["Item"])
