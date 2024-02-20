@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  width: 100%;
-  @apply bg-gray-900
+body {
+    width: 100%;
+    @apply bg-gray-900;
 }
