@@ -4,6 +4,7 @@ from ..DynamoDbTableFactory import DynamoDbTableFactory
 from ..models import TaskState, Task, CreateTask, UpdateTaskState, UpdateTask
 from boto3.dynamodb.conditions import Key
 from uuid import uuid4
+from datetime import datetime
 
 
 class TaskRepository:
@@ -32,12 +33,14 @@ class TaskRepository:
 
     def create(self, createTask: CreateTask) -> Task:
         uuid = str(uuid4())
+        timestamp = int(datetime.now().timestamp() * 1000)
         item = {
             "id": uuid,
             "title": createTask.title,
             "description": createTask.description,
             "project_id": createTask.project_id,
             "state": TaskState.Backlog,
+            "timestamp": timestamp,
         }
         self.__table.put_item(Item=item)
         return Task.model_validate(item)
@@ -74,3 +77,6 @@ class TaskRepository:
             ReturnValues="ALL_NEW",
         )
         return Task.model_validate(page["Attributes"])
+
+    def delete_task(self, id: str) -> None:
+        self.__table.delete_item(Key={"id": id})

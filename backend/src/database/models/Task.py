@@ -14,6 +14,7 @@ class Task(BaseModel):
     state: TaskState = TaskState.Backlog
     description: str
     project_id: str
+    timestamp: int
     title: str
 
 
@@ -33,3 +34,7 @@ class UpdateTask(BaseModel):
 class UpdateTaskState(BaseModel):
     id: str
     state: TaskState = TaskState.Backlog
+
+
+class DeleteTask(BaseModel):
+    id: str
