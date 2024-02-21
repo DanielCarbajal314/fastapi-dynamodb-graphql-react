@@ -11,6 +11,44 @@ type ProjectResult = {
 };
 
 type TaskState = 'Backlog' | 'Review' | 'Doing' | 'Done';
+type TaskSortingField = 'title' | 'description' | 'creation';
+type sortingDirection = 'asc' | 'desc';
+const directionFactor = (direction: sortingDirection) =>
+    direction == 'asc' ? 1 : -1;
+const sortByMap: Record<
+    TaskSortingField,
+    {
+        label: string;
+        sortingFunction: (
+            direction: sortingDirection,
+        ) => (taskA: Task, taskB: Task) => number;
+    }
+> = {
+    title: {
+        label: 'Title',
+        sortingFunction:
+            (direction: sortingDirection) => (taskA: Task, taskB: Task) =>
+                directionFactor(direction) *
+                taskA.title.localeCompare(taskB.title),
+    },
+    description: {
+        label: 'Description',
+        sortingFunction:
+            (direction: sortingDirection) => (taskA: Task, taskB: Task) =>
+                directionFactor(direction) *
+                taskA.description.localeCompare(taskB.description),
+    },
+    creation: {
+        label: 'Creation Time',
+        sortingFunction:
+            (direction: sortingDirection) => (taskA: Task, taskB: Task) =>
+                directionFactor(direction) * taskA.timestamp - taskB.timestamp,
+    },
+};
+type SortTasksBy = {
+    field: TaskSortingField;
+    direction: sortingDirection;
+};
 
 type Task = {
     id: string;
@@ -109,16 +147,27 @@ const DELETE_TASK = gql`
 
 const taskStates = ['Backlog', 'Doing', 'Review', 'Done'];
 
-const buildTaskGroups = (response: GetTaskResult | undefined) => {
+const buildTaskGroups = (
+    response: GetTaskResult | undefined,
+    sortByFunc: (taskA: Task, taskB: Task) => number,
+) => {
     const tasks = response?.tasks ?? [];
     return taskStates.map(state => ({
         stateName: state,
-        tasks: tasks.filter(x => x.state === state),
+        tasks: tasks.filter(x => x.state === state).sort(sortByFunc),
     }));
 };
 
 export function useProjectDetailsState(projectId: string) {
     const [showModal, setShowModal] = useState(false);
+    const [sortTasksBy, setSortTasksBy] = useState<SortTasksBy>({
+        field: 'creation',
+        direction: 'asc',
+    });
+    const { label: currentSortingLabel, sortingFunction } =
+        sortByMap[sortTasksBy.field];
+    const sortByFunc = sortingFunction(sortTasksBy.direction);
+
     const { data: projectData } = useQuery<ProjectResult>(GET_PROJECT, {
         variables: { projectId },
     });
@@ -142,11 +191,13 @@ export function useProjectDetailsState(projectId: string) {
     const deleteTask = (id: string) =>
         deleteTaskMutation({ variables: { id } });
 
+    const setTaskSortBy = (sortBy: SortTasksBy) => setSortTasksBy(sortBy);
+
     const updateTaskState = ({ id, state }: UpdateTaskStateRequest) =>
         updateTastStateMutation({ variables: { id, state } });
     return {
         projectName: projectData?.project.name ?? '',
-        tasksGroups: buildTaskGroups(taskData),
+        tasksGroups: buildTaskGroups(taskData, sortByFunc),
         createTaskLoading,
         updateTastStateLoading,
         deleteTaskLoading,
@@ -156,5 +207,8 @@ export function useProjectDetailsState(projectId: string) {
         showModal,
         setShowModal,
         deleteTask,
+        setTaskSortBy,
+        sortTasksBy,
+        currentSortingLabel,
     };
 }
