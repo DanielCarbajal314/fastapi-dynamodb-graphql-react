@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SortingDirection, TaskSortingField } from './Types';
+import { SortingDirection, TaskSortingField } from '../Types';
 
 type SortingFilterProps = {
     setTaskSortByDirection: (direction: SortingDirection) => void;

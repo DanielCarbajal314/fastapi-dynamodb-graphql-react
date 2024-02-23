@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, CloseButton, SecondaryButton } from '../../Components';
+import { Button, CloseButton, SecondaryButton } from '../../../Components';
 
 type TaskModalProps = {
     showModal: boolean;
