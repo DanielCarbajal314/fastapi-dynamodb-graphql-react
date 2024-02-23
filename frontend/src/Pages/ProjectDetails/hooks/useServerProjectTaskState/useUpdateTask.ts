@@ -27,10 +27,9 @@ export function useUpdateTask(projectId: string) {
         useMutation<UpdateTaskStateResult>(UPDATE_TASK_STATE, {
             refetchQueries: [{ query: GET_TASKS, variables: { projectId } }],
         });
-
-    const updateTask = ({ id, state }: UpdateTaskStateRequest) =>
+    const updateTask = ({ id, state }: UpdateTaskStateRequest) => {
         updateTastStateMutation({ variables: { id, state } });
-
+    };
     return {
         updateTask,
         updateTaskLoading,

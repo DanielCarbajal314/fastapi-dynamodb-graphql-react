@@ -43,8 +43,14 @@ const sortByMap: Record<
 
 const taskStates = ['Backlog', 'Doing', 'Review', 'Done'];
 
+export type TaskGroup = {
+    stateName: string;
+    tasks: Task[];
+};
+
 const buildTaskGroupsFunction =
-    (sortByFunc: (taskA: Task, taskB: Task) => number) => (tasks: Task[]) => {
+    (sortByFunc: (taskA: Task, taskB: Task) => number) =>
+    (tasks: Task[]): TaskGroup[] => {
         return taskStates.map(state => ({
             stateName: state,
             tasks: tasks.filter(x => x.state === state).sort(sortByFunc),

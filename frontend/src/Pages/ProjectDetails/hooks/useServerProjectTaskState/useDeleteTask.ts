@@ -21,8 +21,9 @@ export function useDeleteTask(projectId: string) {
             refetchQueries: [{ query: GET_TASKS, variables: { projectId } }],
         });
 
-    const deleteTask = (id: string) =>
+    const deleteTask = (id: string) => {
         deleteTaskMutation({ variables: { id } });
+    };
 
     return {
         deleteTaskLoading,
