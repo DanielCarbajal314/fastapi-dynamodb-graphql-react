@@ -3,6 +3,7 @@ import { useProjectDetailsState } from './useProjectDetailsState';
 import { Button, CloseButton } from '../../Components';
 import { TaskModal } from './TaskModal';
 import { useDragState } from './useDragState';
+import { SortingFilter } from './SortingFilter';
 
 export function ProjectDetails() {
     const { projectId } = useParams();
@@ -22,6 +23,8 @@ export function ProjectDetails() {
         createTask,
         updateTaskState,
         deleteTask,
+        setTaskSortByDirection,
+        setTaskSortByField,
     } = useProjectDetailsState(projectId ?? '');
     const openCreateTaskModal = () => setShowModal(true);
     return (
@@ -32,8 +35,11 @@ export function ProjectDetails() {
                     {projectName}
                 </h5>
             </div>
-            <div className="flex justify-start">
+            <div className="flex items-center justify-between">
                 <Button label="Create New Task" onClick={openCreateTaskModal} />
+                <SortingFilter
+                    {...{ setTaskSortByDirection, setTaskSortByField }}
+                />
             </div>
             <div className="flex justify-evenly gap-2 mt-5 h-[700px]">
                 {tasksGroups.map(({ tasks, stateName }, index) => (

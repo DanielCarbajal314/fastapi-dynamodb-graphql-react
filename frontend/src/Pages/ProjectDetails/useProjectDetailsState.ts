@@ -1,61 +1,50 @@
 import { useQuery, gql, useMutation } from '@apollo/client';
 import { useState } from 'react';
-
-type Project = {
-    id: string;
-    name: string;
-};
+import {
+    Project,
+    SortTasksBy,
+    SortingDirection,
+    Task,
+    TaskSortingField,
+} from './Types';
 
 type ProjectResult = {
     project: Project;
 };
 
-type TaskState = 'Backlog' | 'Review' | 'Doing' | 'Done';
-type TaskSortingField = 'title' | 'description' | 'creation';
-type sortingDirection = 'asc' | 'desc';
-const directionFactor = (direction: sortingDirection) =>
+const directionFactor = (direction: SortingDirection) =>
     direction == 'asc' ? 1 : -1;
+
 const sortByMap: Record<
     TaskSortingField,
     {
         label: string;
         sortingFunction: (
-            direction: sortingDirection,
+            direction: SortingDirection,
         ) => (taskA: Task, taskB: Task) => number;
     }
 > = {
     title: {
         label: 'Title',
         sortingFunction:
-            (direction: sortingDirection) => (taskA: Task, taskB: Task) =>
+            (direction: SortingDirection) => (taskA: Task, taskB: Task) =>
                 directionFactor(direction) *
                 taskA.title.localeCompare(taskB.title),
     },
     description: {
         label: 'Description',
         sortingFunction:
-            (direction: sortingDirection) => (taskA: Task, taskB: Task) =>
+            (direction: SortingDirection) => (taskA: Task, taskB: Task) =>
                 directionFactor(direction) *
                 taskA.description.localeCompare(taskB.description),
     },
     creation: {
         label: 'Creation Time',
         sortingFunction:
-            (direction: sortingDirection) => (taskA: Task, taskB: Task) =>
-                directionFactor(direction) * taskA.timestamp - taskB.timestamp,
+            (direction: SortingDirection) => (taskA: Task, taskB: Task) =>
+                directionFactor(direction) *
+                (taskA.timestamp - taskB.timestamp),
     },
-};
-type SortTasksBy = {
-    field: TaskSortingField;
-    direction: sortingDirection;
-};
-
-type Task = {
-    id: string;
-    title: string;
-    description: string;
-    state: TaskState;
-    timestamp: number;
 };
 
 type GetTaskResult = {
@@ -191,7 +180,10 @@ export function useProjectDetailsState(projectId: string) {
     const deleteTask = (id: string) =>
         deleteTaskMutation({ variables: { id } });
 
-    const setTaskSortBy = (sortBy: SortTasksBy) => setSortTasksBy(sortBy);
+    const setTaskSortByDirection = (direction: SortingDirection) =>
+        setSortTasksBy(sort => ({ ...sort, direction }));
+    const setTaskSortByField = (field: TaskSortingField) =>
+        setSortTasksBy(sort => ({ ...sort, field }));
 
     const updateTaskState = ({ id, state }: UpdateTaskStateRequest) =>
         updateTastStateMutation({ variables: { id, state } });
@@ -207,7 +199,8 @@ export function useProjectDetailsState(projectId: string) {
         showModal,
         setShowModal,
         deleteTask,
-        setTaskSortBy,
+        setTaskSortByDirection,
+        setTaskSortByField,
         sortTasksBy,
         currentSortingLabel,
     };
