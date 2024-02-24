@@ -1,16 +1,19 @@
 import { useDragState } from '../hooks/useDragState';
 import { TaskGroup } from '../hooks/useTaskSortingState';
 import { TaskCard } from './TaskCard';
+import { UpdateTask } from './UpdateTaskModal';
 
 type TasksBoardProps = {
     tasksGroups: TaskGroup[];
     deleteTask: (taskId: string) => void;
-    updateTask: (request: { id: string; state: string }) => void;
+    updateTaskState: (request: { id: string; state: string }) => void;
+    updateTask: (request: UpdateTask) => void;
 };
 
 export function TasksBoard({
     tasksGroups,
     deleteTask,
+    updateTaskState,
     updateTask,
 }: TasksBoardProps) {
     const {
@@ -32,7 +35,7 @@ export function TasksBoard({
                     onDrop={e => {
                         e.preventDefault();
                         clearActiveState();
-                        updateTask({
+                        updateTaskState({
                             id: draggedTaskId,
                             state: stateName,
                         });
@@ -51,7 +54,10 @@ export function TasksBoard({
                     </h5>
                     <div className="flex-col">
                         {tasks.map(task => (
-                            <TaskCard {...{ ...task, deleteTask }} />
+                            <TaskCard
+                                key={task.id}
+                                {...{ task, deleteTask, updateTask }}
+                            />
                         ))}
                     </div>
                 </div>

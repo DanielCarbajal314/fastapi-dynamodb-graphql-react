@@ -1,32 +1,35 @@
-import { CloseButton } from '../../../Components';
+import { useState } from 'react';
+import { CloseButton, EditButton } from '../../../Components';
+import { Task } from '../Types';
+import { UpdateTask, UpdateTaskModal } from './UpdateTaskModal';
 
 type TaskCardProps = {
-    id: string;
-    title: string;
-    description: string;
-    timestamp: number;
+    task: Task;
     deleteTask: (id: string) => void;
+    updateTask: (request: UpdateTask) => void;
 };
 
-export function TaskCard({
-    id,
-    title,
-    description,
-    timestamp,
-    deleteTask,
-}: TaskCardProps) {
+export function TaskCard({ task, deleteTask, updateTask }: TaskCardProps) {
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const { id, description, timestamp, title } = task;
+    const showModal = () => setShowUpdateModal(true);
     return (
         <div
-            key={id}
             task-id={id}
             draggable={true}
             className="block max-w-sm m-5 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
         >
-            <div className="border border-blue-800 border-t-0 border-l-0 border-r-0 border-b-2 flex justify-start pl-5">
+            <UpdateTaskModal
+                {...{ task, showUpdateModal, setShowUpdateModal, updateTask }}
+            />
+            <div className="border border-blue-800 border-t-0 border-l-0 border-r-0 border-b-2 flex justify-between pl-5">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-1">
                     {title}
                 </h5>
-                <CloseButton onClick={() => deleteTask(id)} />
+                <div className="flex justify-end gap-2">
+                    <EditButton onClick={showModal} />
+                    <CloseButton onClick={() => deleteTask(id)} />
+                </div>
             </div>
             <div className="py-4 px-6">
                 <p className="font-normal text-gray-700 dark:text-gray-400">

@@ -13,6 +13,7 @@ export function ProjectDetails() {
         showModal,
         setShowModal,
         createTask,
+        updateTaskState,
         updateTask,
         deleteTask,
         setTaskSortByDirection,
@@ -33,7 +34,9 @@ export function ProjectDetails() {
                     {...{ setTaskSortByDirection, setTaskSortByField }}
                 />
             </div>
-            <TasksBoard {...{ tasksGroups, deleteTask, updateTask }} />
+            <TasksBoard
+                {...{ tasksGroups, deleteTask, updateTaskState, updateTask }}
+            />
         </div>
     );
 }

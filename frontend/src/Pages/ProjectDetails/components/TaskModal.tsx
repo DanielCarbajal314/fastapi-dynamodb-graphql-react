@@ -61,7 +61,9 @@ export function TaskModal(props: TaskModalProps) {
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                             Create Task
                         </h3>
-                        <CloseButton onClick={closeModal} />
+                        <div>
+                            <CloseButton onClick={closeModal} />
+                        </div>
                     </div>
                     <div className="p-4 md:p-5 space-y-4">
                         <form className="flex-col justify-start">
