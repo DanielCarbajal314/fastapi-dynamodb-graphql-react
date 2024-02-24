@@ -1,5 +1,10 @@
 include .env
 
+setup:
+	docker compose build
+	npm --prefix ./frontend install ./frontend
+	pip3 install ./backend
+
 up:
 	docker compose up
 

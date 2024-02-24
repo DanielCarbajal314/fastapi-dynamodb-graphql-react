@@ -1,0 +1,10 @@
+FROM node:20.11.1
+
+WORKDIR /code
+
+COPY ./. /code/.
+
+RUN npm install vite -g
+RUN npm install
+
+CMD ["npm", "run", "dev"]

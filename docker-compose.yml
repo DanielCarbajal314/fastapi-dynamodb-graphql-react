@@ -29,3 +29,11 @@ services:
       - ./backend/src:/code/src
     ports:
       - ${API_SERVER_PORT}:8000
+  ui:
+    build: 
+      context: frontend
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./frontend/src:/code/src
+    ports:
+      - 5173:5173
