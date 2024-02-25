@@ -19,21 +19,21 @@ const sortByMap: Record<
     }
 > = {
     title: {
-        label: 'Title',
+        label: 'title',
         sortingFunction:
             (direction: SortingDirection) => (taskA: Task, taskB: Task) =>
                 directionFactor(direction) *
                 taskA.title.localeCompare(taskB.title),
     },
     description: {
-        label: 'Description',
+        label: 'description',
         sortingFunction:
             (direction: SortingDirection) => (taskA: Task, taskB: Task) =>
                 directionFactor(direction) *
                 taskA.description.localeCompare(taskB.description),
     },
     creation: {
-        label: 'Creation Time',
+        label: 'creation time',
         sortingFunction:
             (direction: SortingDirection) => (taskA: Task, taskB: Task) =>
                 directionFactor(direction) *
@@ -62,8 +62,10 @@ export function useTaskSortingState() {
         field: 'creation',
         direction: 'asc',
     });
-    const { label: currentSortingLabel, sortingFunction } =
-        sortByMap[sortTasksBy.field];
+    const { label, sortingFunction } = sortByMap[sortTasksBy.field];
+    const direction =
+        sortTasksBy.direction === 'asc' ? 'ascending' : 'descending';
+    const currentSortingLabel = `Sorting by ${label} ${direction}`;
     const sortByFunc = sortingFunction(sortTasksBy.direction);
     const setTaskSortByDirection = (direction: SortingDirection) =>
         setSortTasksBy(sort => ({ ...sort, direction }));

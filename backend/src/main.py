@@ -18,6 +18,7 @@ app.add_middleware(
 
 app.add_route("/graphql", GraphQLApp(schema=AppSchema, on_get=make_graphiql_handler()))
 
+
 @app.get("/healthcheck/")
 def healthcheck():
     return "Health - OK"

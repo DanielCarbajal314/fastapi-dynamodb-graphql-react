@@ -28,6 +28,13 @@ delete-local-data:
 
 format:
 	docker compose exec server bash -c "black ./src"
+	docker compose exec ui bash -c "npx prettier --write ."
+
+unit-test-dev-watch:
+	docker compose exec ui bash -c "npm run unit-test-develop"
+
+unit-test-ci:
+	docker compose exec ui bash -c "npm run unit-test-ci"
 
 open-grapiql:
 	open http://localhost:8500/graphql
