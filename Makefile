@@ -9,7 +9,7 @@ up:
 	docker compose up
 
 down:
-	docker compose down
+	docker compose down -v
 
 aws-cli:
 	docker compose exec awscli sh
