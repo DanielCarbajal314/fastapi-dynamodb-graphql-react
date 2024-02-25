@@ -1,4 +1,3 @@
-
 # Fastapi with Graphene Graphql, Vite-React-Typecript, DynamoDb
 
 This project is a full-stack web application fully containerized that allows user to emulates a Kanban board using the next techstack
