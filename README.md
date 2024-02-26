@@ -17,21 +17,21 @@ The whole developer enviroment runs on the next containers:
 
 By using a Make file most common developer operations are stored to expose a easy to use contact surface - _most of the operations are executed inside containers_ - with the following commands:
 
--  __setup__ - Build the docker images and install local depenencies to have intellisence on Vscode
+-  __setup__ - Builds the docker images and install local depenencies to have intellisence on Vscode
 
-- __up__ - Start all the container
+- __up__ - Starts all the container
 
-- __down__ - Turn off and remove containers
+- __down__ - Turns off and remove containers
 
 - __aws-cli__ - Shells into the aws-cli container to execute aws commands
 
-- __create-table__ - Create a table on DynamoDb
+- __create-table__ - Creates a table on DynamoDb
 
-- __list-tables__ - List all tables created on DynamoDb
+- __list-tables__ - Lists all tables created on DynamoDb
 
-- __list-table-items__ - List all items for a table with queried name
+- __list-table-items__ - Lists all items for a table with queried name
 
-- __delete-local-data__ - Delete local volume where DynamoDb Container stores data
+- __delete-local-data__ - Deletes local volume where DynamoDb Container stores data
 
 - __format__ - Runs Black on Backeend Python code and Runs Prettier on Frontend Typescript code
 
@@ -39,4 +39,4 @@ By using a Make file most common developer operations are stored to expose a eas
 
 - __unit-test-ci__ - Runs Frontend Unit Test ones
 
-- __open-grapiql__ - Open Graphene Graphql Client app
+- __open-grapiql__ - Opens Graphene Graphql Client app
